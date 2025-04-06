@@ -15,6 +15,15 @@ public class RaceMap : MonoBehaviour, IResettable
 
 	}
 
+	public void Initalise()
+	{
+		foreach (var item in scrollItems)
+		{
+			item.Initialised();
+		}
+
+	}
+
 	// Start is called before the first frame update
 	void Start()
     {

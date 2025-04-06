@@ -9,36 +9,42 @@ public class ParallaxScroll : MonoBehaviour, IResettable
 	private float textureUnitSizeX;
 
 	private Vector3 startPosition;
+	private float startPos;
 	public void Reset()
 	{
 		transform.position = startPosition;
+		startPos = startPosition.x;
+		initialised = false;
+	}
+
+	private bool initialised = false;
+	public void Initialised()
+	{
+		initialised = true;
 	}
 
 	void Start()
 	{
 		startPosition = transform.position;
-
+		startPos = startPosition.x;
 		lastCameraPosition = cameraTransform.position;
 
 		Sprite sprite = GetComponent<SpriteRenderer>().sprite;
 		Texture2D texture = sprite.texture;
-		textureUnitSizeX = texture.width / sprite.pixelsPerUnit * transform.localScale.x;
+		textureUnitSizeX = sprite.bounds.size.x;
 	}
 
 	void Update()
 	{
-		Vector3 deltaMovement = cameraTransform.position - lastCameraPosition;
-		transform.position += new Vector3(deltaMovement.x * parallaxSpeed, 0f, 0f);
-		lastCameraPosition = cameraTransform.position;
-
-		// Loop the sprite
-		float offsetX = cameraTransform.position.x - transform.position.x;
-		float height = Camera.main.orthographicSize * 2f;
-		float width = height * Camera.main.aspect;
-		if (Mathf.Abs(offsetX) + width/2 >= textureUnitSizeX )
+		if (initialised)
 		{
-			float offsetPosX = (offsetX % textureUnitSizeX);
-			transform.position = new Vector3(cameraTransform.position.x + offsetPosX, transform.position.y);
+			float temp = cameraTransform.position.x * (1 - parallaxSpeed);
+			float dist = cameraTransform.position.x * parallaxSpeed;
+			transform.position = new Vector3(startPos + dist, transform.position.y, transform.position.z);
+
+			if (temp > startPos + textureUnitSizeX) { startPos += textureUnitSizeX; }
+			//else if (temp < startPos + textureUnitSizeX) { startPos -= textureUnitSizeX; }
 		}
+
 	}
 }

@@ -37,6 +37,7 @@ public class RaceManager : MonoBehaviour, IResettable
 		_cameraManager.SetTarget(_car.transform);
 		_timer.StartTime(_raceTotalTime);
 		_car.InitialiseAction(true);
+		_raceMap.Initalise();
 		GameObject g = new GameObject("Speech Handler");
 		SpeechHandler sh =  g.AddComponent<SpeechHandler>();
 		sh.Initialise(OnSpeechRegistered);
