@@ -46,13 +46,13 @@ public class RaceManager : MonoBehaviour, IResettable
 	public void EndRaceLose()
 	{
 		_raceUI.RaceEndPanel("Lost the race!");
-		EndRace();
+		Invoke(nameof(EndRace), 1f);
 	}
 
 	public void EndRaceWin()
 	{
 		_raceUI.RaceEndPanel("Wooo!! Victory");
-		EndRace();
+		Invoke(nameof(EndRace), 1f);
 	}
 
 	private void EndRace()
